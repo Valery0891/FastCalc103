@@ -1,0 +1,101 @@
+html {
+    text-align: center;
+}
+body {
+    margin: 0;
+}
+h1 {
+    font-size: 60px;
+    color: blue;
+}
+h2 {
+    font-size: 25px;
+}
+h3 {
+    font-size: 25px;
+    color: cornflowerblue;
+}
+p {
+    font-size: 20px;
+    margin: 30px;
+    color: gray;
+}
+span {
+    font-size: 40px;
+    color: blue;
+}
+input {
+    font-size: 40px;
+    border: 3px double black;
+    text-align: center;
+}
+button {
+    font-size: 50px;
+    border: 5px double cornflowerblue;
+    text-align: center;
+    margin: 30px;
+}
+output {
+    font-size: 40px;
+    color: blue;
+}
+table {
+    border: 2px double black;
+    border-collapse: collapse;
+}
+th {
+    padding: 7px; /* Поля вокруг содержимого таблицы */
+    border: 2px double black; /* Параметры рамки */
+    font-size: 25px;
+}
+/*#prompt-form {
+    margin: 2%;
+    border: 5px double cornflowerblue;
+    background: #ffffff;
+    display: none;
+}*/
+#prompt-form {
+    display: inline-block;
+    width: 75%;
+    height: 25%;
+    border: 5px double cornflowerblue;
+    background: #ffffff;
+    vertical-align: middle;
+}
+#prompt-form-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+#prompt-form-container:before {
+    display: inline-block;
+    height: 100%;
+    content: '';
+    vertical-align: middle;
+}
+#cover-div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9000;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    opacity: 0.3;
+}
+#center {
+    display: inline-block;
+}
+.border {
+    margin: 2%;
+    border: 5px double cornflowerblue;
+}
+.danger {
+    color: firebrick;
+    font-weight: bolder;
+}
