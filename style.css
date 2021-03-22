@@ -48,12 +48,6 @@ th {
     border: 2px double black; /* Параметры рамки */
     font-size: 25px;
 }
-/*#prompt-form {
-    margin: 2%;
-    border: 5px double cornflowerblue;
-    background: #ffffff;
-    display: none;
-}*/
 #prompt-form {
     display: inline-block;
     width: 75%;
@@ -98,4 +92,7 @@ th {
 .danger {
     color: firebrick;
     font-weight: bolder;
+}
+.showHide {
+    display: none;
 }

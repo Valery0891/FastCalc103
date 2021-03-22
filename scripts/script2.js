@@ -3,8 +3,8 @@ let divList = '<h2>Километраж вызова:</h2>';
 divList += '<div id="ff0"><span>1.&nbsp&nbsp</span><input type="number" id="fff0" class="localSt" name="n2" min="1" placeholder="Введите расстояние (км.)" onblur="sum()"></div>';
 document.getElementById('f8').innerHTML = divList;
 for (let i = 0; i <= 25; i++) {
-    if (localStorage.getItem('ff' + [i+1]) === '<div id="ff' + [i+1] + '"><span>' + [i+2] + '.&nbsp&nbsp</span><input type="number" id="fff' + [i+1] + '" class="localSt" name="n2" min="1" placeholder="Введите расстояние (км.)" onblur="sum()"></div>') {
-        divList +=                                 '<div id="ff' + [i+1] + '"><span>' + [i+2] + '.&nbsp&nbsp</span><input type="number" id="fff' + [i+1] + '" class="localSt" name="n2" min="1" placeholder="Введите расстояние (км.)" onblur="sum()"></div>';
+    if (localStorage.getItem('ff' + [i+1])) {
+        divList += '<div id="ff' + [i+1] + '"><span>' + [i+2] + '.&nbsp&nbsp</span><input type="number" id="fff' + [i+1] + '" class="localSt" name="n2" min="1" placeholder="Введите расстояние (км.)" onblur="sum()"></div>';
         document.getElementById('f8').innerHTML = divList;
     }
     else {
@@ -52,13 +52,13 @@ else {
     }
 }
 
-//Делаем мигать поле blink2/blink3
+//Делаем мигать поле blink2
 document.querySelector('#f32').addEventListener('input', function() {
     function message(){
-        document.getElementById('blink2').innerHTML = 'Проверьте или введите норму!';
+        document.getElementById('blink2').innerHTML = 'Проверьте<br>или введите норму!';
     }
     function stock(){
-        document.getElementById('blink2').innerHTML = 'Норма расхода топлива (л./ч.):';
+        document.getElementById('blink2').innerHTML = 'Норма расхода топлива<br>(л./ч.):';
     }
     for (let i = 0; i<10; i++) {
         if (i % 2 === 0) {
@@ -70,15 +70,29 @@ document.querySelector('#f32').addEventListener('input', function() {
     }
 });
 
+function choiceFuel() {
+    document.getElementById('choiceFuel').style.display = 'none';
+    document.getElementById('showHide').style.display = 'block';
+}
 
 function benzDisMonth() {
+    document.getElementById('showHide').style.display = 'none';
+    document.getElementById('choiceFuel').style.display = 'block';
+    document.getElementById('showHide0').style.display = 'block';
+    let D = new Date();
+    document.getElementById('startShiftDate').value = 'Дата: ' + D.toLocaleString("ru", {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    })
+    localStorage.setItem('startShiftDate', document.getElementById('startShiftDate').value)
     function message(){
-        document.getElementById('blink').innerHTML = 'Проверьте или введите гоcномер!';
-        document.getElementById('blink3').innerHTML = 'Проверьте или введите норму!';
+        document.getElementById('blink').innerHTML = 'Проверьте<br>или введите гоcномер!';
+        document.getElementById('blink3').innerHTML = 'Проверьте<br>или введите норму!';
     }
     function stock(){
-        document.getElementById('blink').innerHTML = 'Регистрационный номер автомобиля:';
-        document.getElementById('blink3').innerHTML = 'Норма расхода топлива (л./100км.):';
+        document.getElementById('blink').innerHTML = 'Регистрационный<br>номер автомобиля:';
+        document.getElementById('blink3').innerHTML = 'Норма расхода топлива<br>(л./100км.):';
     }
     for (let i = 0; i<24; i++) {
         if (i % 2 === 0) {
@@ -88,8 +102,7 @@ function benzDisMonth() {
             setTimeout(stock, i*1000);
         }
     }
-    if (document.getElementById('monthSt').value === '' || document.getElementById('monthSt').value !== document.getElementById('monthFin').value) {
-        let D = new Date();
+    if (!document.getElementById('monthSt').value || document.getElementById('monthSt').value !== document.getElementById('monthFin').value) {
         document.getElementById('monthSt').value = D.getMonth();
         localStorage.setItem('monthSt', document.getElementById('monthSt').value);
         document.getElementById('benz').value = 0;
@@ -105,26 +118,30 @@ function benzDisMonth() {
 let radio = document.getElementsByName('fuel');
 radio[0].onclick = function() {
     localStorage.setItem('idRadio', this.value);
-    document.getElementById('f3.1').setAttribute("readonly", "readonly");
-    document.getElementById('f32').setAttribute("readonly", "readonly")
+    document.getElementById('showHide2').style.display = 'none';
+    if(document.getElementById('f32').value) {
+        localStorage.removeItem('f32');
+        document.getElementById('f32').value = ''
+        localStorage.removeItem('f3.3');
+        document.getElementById('f3.3').value = ''
+    }
     benzDisMonth();
 };
 radio[1].onclick = function() {
     localStorage.setItem('idRadio', this.value);
-    document.getElementById('f3.1').readOnly = false;
-    document.getElementById('f32').readOnly = false;
+    document.getElementById('showHide2').style.display = 'block';
     benzDisMonth()
 };
 
 if (localStorage.getItem('idRadio') === 'benz') {
     radio[0].checked = true;
-    document.getElementById('f3.1').setAttribute("readonly", "readonly");
-    document.getElementById('f32').setAttribute("readonly", "readonly")
+    document.getElementById('showHide2').style.display = 'none';
+    document.getElementById('showHide0').style.display = 'block';
 }
 else if (localStorage.getItem('idRadio') === 'dis') {
     radio[1].checked = true;
-    document.getElementById('f3.1').readOnly = false;
-    document.getElementById('f32').readOnly = false;
+    document.getElementById('showHide2').style.display = 'block';
+    document.getElementById('showHide0').style.display = 'block';
 }
 
 function add() {
@@ -137,8 +154,12 @@ function add() {
         return km >= 1
     }
     if (arr.every(isPositive) === true && i <= 25) {
-        document.getElementById('f8').insertAdjacentHTML('beforeEnd', '<div id="ff' + i + '"><span>' + [i+1] + '.&nbsp&nbsp</span><input type="number" id="fff' + i + '" class="localSt" name="n2" min="1" placeholder="Введите расстояние (км.)" onblur="sum()"></div>');
-        localStorage.setItem('ff' + i,                                                    '<div id="ff' + i + '"><span>' + [i+1] + '.&nbsp&nbsp</span><input type="number" id="fff' + i + '" class="localSt" name="n2" min="1" placeholder="Введите расстояние (км.)" onblur="sum()"></div>');
+        let input = '<div id="ff' + i + '">' +
+                    '<span>' + [i+1] + '.&nbsp&nbsp</span>' +
+                    '<input type="number" id="fff' + i + '" class="localSt" name="n2" min="1" placeholder="Введите расстояние (км.)" onblur="sum()">' +
+                    '</div>';
+        document.getElementById('f8').insertAdjacentHTML('beforeEnd', input);
+        localStorage.setItem('ff' + i, input);
         (function () {
             n2[i].oninput = function () {
                 localStorage.setItem(n2[i].getAttribute('id'), n2[i].value);
@@ -177,10 +198,11 @@ function sum() {
         let n2 = document.getElementsByName('n2');
         for (let i = 0; i < n2.length; i++) {
             a += parseFloat(n2[i].value);
-            if (document.getElementById('f3.1').value !== '' && document.getElementById('f32').value !== '') {
+            if (document.getElementById('f3.1').value && document.getElementById('f32').value) {
                 let ebrSp = parseFloat((document.getElementById('f3.1').value * document.getElementById('f32').value).toFixed(2));
                 cons = ((a/100 *  parseFloat(document.getElementById('f5').value) + ebrSp)).toFixed(2);
                 document.getElementById('f3.3').innerHTML = ebrSp + ' л.'
+                localStorage.setItem('f3.3', document.getElementById('f3.3').innerHTML);
             }
             else {
                 cons = (a/100 *  parseFloat(document.getElementById('f5').value)).toFixed(2);
@@ -205,11 +227,7 @@ function sum() {
                 localStorage.setItem('f13', document.getElementById('f13').innerHTML)
             }
         }
-        if (localStorage.getItem('idRadio') === 'benz') {
-            document.getElementById('f3.3').innerHTML = ''
-        }
     }
-
 }
 
 function showCover() {
@@ -229,7 +247,10 @@ function hideCover() {
 }
 
 function reset() {
-    if (document.getElementById('f9').value === '' || document.getElementById('f10').value === '' || document.getElementById('f11').value === '' || document.getElementById('f12').value === '' || document.getElementById('f13').value === '') {
+    let f9 = document.getElementById('f9').innerHTML;
+    let f11 = document.getElementById('f11').innerHTML;
+    let f13 = document.getElementById('f13').innerHTML;
+    if (!f9 || f9 === 'NaN л.' || f13 === 'NaN л.' || f11 === 'NaN л.') {
         function message() {
             document.getElementById('blink4').innerHTML = '';
             document.getElementById('blink5').innerHTML = 'Данные уже были удалены, или текущие данные не введены или не обработаны!';
@@ -263,6 +284,7 @@ function reset() {
             location.reload();
             let D = new Date();
             //Переменные, формирующие журнал
+            let startShiftDate = document.getElementById('startShiftDate').innerHTML;
             let a = 'Остаток топлива при выезде: ' + document.getElementById('f4').value + ' л.';
             let b = 'Показания одометра при выезде: ' + document.getElementById('f7').value + ' км.';
             let c = 'Заправка: ' + document.getElementById('f6').value + ' л.';
@@ -272,13 +294,8 @@ function reset() {
             let g = 'Расход топлива: ' + document.getElementById('f10').innerHTML;
             let h = 'Госномер автомобиля: ' + document.getElementById('regNumber').value;
             //Формируем данные в журнал
-            document.getElementById('endShiftData').value = 'Дата: ' + D.toLocaleString("ru", {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                })
-                + '</br>' + a + '</br>' + b + '</br>' + c + '</br>' + d + '</br>' + e + '</br>' + f + '</br>' + g + '</br>' + h;
-            localStorage.setItem('endShiftData', document.getElementById('endShiftData').value);
+            document.getElementById('lastShiftData').value = startShiftDate + '</br>' + a + '</br>' + b + '</br>' + c + '</br>' + d + '</br>' + e + '</br>' + f + '</br>' + g + '</br>' + h;
+            localStorage.setItem('lastShiftData', document.getElementById('lastShiftData').value);
             localStorage.setItem('regNumber', document.getElementById('regNumber').value);
             localStorage.setItem('f3.1', document.getElementById('f3.1').value);
             localStorage.setItem('f5', document.getElementById('f5').value);
@@ -287,7 +304,7 @@ function reset() {
             localStorage.setItem('monthFin', D.getMonth().toLocaleString());
             localStorage.setItem('benz', balanceBenz);
             localStorage.setItem('dis', balanceDis);
-            localStorage.setItem('th0', document.getElementById('endShiftData').value);
+            localStorage.setItem('th0', document.getElementById('lastShiftData').value);
             let log = document.getElementsByTagName('th');
             for (let i = 0; i < log.length; i++) {
                 localStorage.setItem('th' + [i + 1], log[i].innerHTML);

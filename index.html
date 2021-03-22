@@ -23,12 +23,12 @@
         "Километраж вызова" с помощью кнопки "Добавить/Удалить поле"
         и заполняйте их. При необходимости заполните поле "Заправка". Подсчет происходит после заполнения всех
         необходимых полей, по клику на свободном пространстве страницы.
-        Для коректной работы программы пользоваться кнопкой "Удалить данные" следует в начале рабочей смены.
+        Пользоваться кнопкой "Удалить данные" рекомендуется в начале рабочей смены.
     </p>
 </div>
 <div id="prompt-form-container">
     <form id="prompt-form">
-        <h2>Вы действительно хотите удалить данные?</h2>
+        <h2>Вы действительно<br>хотите удалить данные?</h2>
         <label>
             <button id="Yes">Удалить</button>
             <button id="No">Отмена</button>
@@ -44,54 +44,67 @@
         <output id="f3.1.1"></output>
     </div>
     <div>
-        <h3>Баланс остатков в текущем месяце (л.)</h3>
+        <h3>Баланс остатков в текущем месяце (л.):</h3>
         <label><input type="hidden" id="monthSt" class="localSt"></label>
         <label><input type="hidden" id="monthFin" class="localSt"></label>
-        <label><input type="hidden" id="endShiftData" class="localSt"></label>
+        <label><input type="hidden" id="lastShiftData" class="localSt"></label>
         <h2>Бензин:</h2><label><input type="number" id="benz" class="localSt" readonly></label>
         <h2>Дизель:</h2><label><input type="number" id="dis" class="localSt" readonly></label>
     </div>
-    <div>
+    <div id="choiceFuel">
+        <button onclick="choiceFuel()">Выбрать тип топлива</button>
+    </div>
+    <div id="showHide" class="showHide">
         <h3>Выберите тип топлива</h3>
         <h2>
             <label><input type="radio" name="fuel" style="width:120px; height:40px;" value="benz"></label> Бензин
             <label><input type="radio" name="fuel" style="width:120px; height:40px;" value="dis"></label> Дизель
         </h2>
-        <h3 id="blink">Регистрационный номер автомобиля:</h3><label><input type="text" id="regNumber" class="localSt" placeholder="Введите госномер"></label>
+    </div>
+    <div id="showHide0" class="showHide">
+    <div>
+        <h3>Дата начала смены:</h3>
+        <output id="startShiftDate" class="localS"></output>
     </div>
     <div>
+        <h3 id="blink">Регистрационный<br>номер автомобиля:</h3>
+        <form>
+            <label><input type="text" id="regNumber" class="localSt" autocomplete="on" placeholder="Введите госномер"></label>
+        </form>
+    </div>
+    <div id="showHide2" class="showHide">
         <h3>Работа автономного отопителя</h3>
-        <h2 id="blink2">Норма расхода топлива (л./ч.):</h2>
-        <label><input type="number" id="f3.1" class="localSt" placeholder="Введите норму" readonly onblur="sum()"></label>
-        <h2>Продолжительность работы (ч.):</h2>
-        <label><input type="number" id="f32" class="localSt" placeholder="Количество часов" readonly onblur="sum()"></label>
+        <h2 id="blink2">Норма расхода топлива<br>(л./ч.):</h2>
+        <label><input type="number" id="f3.1" class="localSt" placeholder="Введите норму" onblur="sum()"></label>
+        <h2>Продолжительность работы<br>(ч.):</h2>
+        <label><input type="number" id="f32" class="localSt" placeholder="Количество часов" onblur="sum()"></label>
         <h2>Расход топлива:</h2>
-        <output id="f3.3"></output>
+        <output id="f3.3" class="localS"></output>
     </div>
     <div>
         <h3>Работа автомобиля</h3>
-        <h2>Остаток топлива при выезде (л.):</h2>
+        <h2>Остаток топлива при выезде<br>(л.):</h2>
         <label>
             <input type="number" id="f4" class="localSt" placeholder="Введите остаток" min="1" onblur="sum()">
         </label>
-        <h2 id="blink3">Норма расхода топлива (л./100км.):</h2>
+        <h2 id="blink3">Норма расхода топлива<br>(л./100км.):</h2>
         <label><input type="number" id="f5" class="localSt" placeholder="Введите норму" min="1" onblur="sum()"></label>
-        <h2>Заправка (л.):</h2>
+        <h2>Заправка<br>(л.):</h2>
         <label><input type="number" id="f6" class="localSt" placeholder="Заправлено топлива" min="0" onblur="sum()"></label>
-        <h2>Показания одометра при выезде (км.):</h2>
+        <h2>Показания одометра при выезде<br>(км.):</h2>
         <label><input type="number" id="f7" class="localSt" placeholder="Введите пробег" min="0" onblur="sum()"></label>
         <div id="f8"></div>
     </div>
     <div>
         <button onclick="add()">Добавить/Удалить поле</button>
     </div>
-    <div><h2>Остаток топлива (возвращение в гараж):</h2>
+    <div><h2>Остаток топлива<br>(возвращение в гараж):</h2>
         <output class="localS" id="f9"></output>
     </div>
     <div><h2>Расход топлива:</h2>
         <output class="localS" id="f10"></output>
     </div>
-    <div><h2>Показания одометра (возвращение в гараж):</h2>
+    <div><h2>Показания одометра<br>(возвращение в гараж):</h2>
         <output class="localS" id="f11"></output>
     </div>
     <div><h2>Пробег за смену:</h2>
@@ -106,6 +119,7 @@
     <div>
         <output id="blink5"></output>
     </div>
+    </div>
     <h3>Журнал</h3>
     <div id="center">
         <table id="table"></table>
@@ -116,7 +130,7 @@
     FastCalc103 v.1.1 08.03.2021
     <div><img src="starOfLife.jpg" alt="Star"/></div>
 </footer>
-<script src="Scripts/script1.js"></script>
-<script src="Scripts/script2.js"></script>
+<script src="scripts/script1.js"></script>
+<script src="scripts/script2.js"></script>
 </body>
 </html>
