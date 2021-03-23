@@ -21,9 +21,10 @@
         ячейки. А также заполните ячейки: "Остаток топлива при выезде",
         "Норма расхода топлива" и "Показания одометра при выезде". По мере необходимости добавляйте новые поля
         "Километраж вызова" с помощью кнопки "Добавить/Удалить поле"
-        и заполняйте их. При необходимости заполните поле "Заправка". Подсчет происходит после заполнения всех
-        необходимых полей, по клику на свободном пространстве страницы.
-        Пользоваться кнопкой "Удалить данные" рекомендуется в начале рабочей смены.
+        и заполняйте их. При желании определяйте время выезда и прибытия, пользуясь соответствующими кнопками.
+        При необходимости заполните поле "Заправка". Подсчет происходит после заполнения всех необходимых полей, по клику
+        на свободном пространстве страницы.  Пользоваться кнопкой "Удалить данные"
+        рекомендуется в начале рабочей смены.
     </p>
 </div>
 <div id="prompt-form-container">
@@ -52,7 +53,7 @@
         <h2>Дизель:</h2><label><input type="number" id="dis" class="localSt" readonly></label>
     </div>
     <div id="choiceFuel">
-        <button onclick="choiceFuel()">Выбрать тип топлива</button>
+        <button onclick="fuelSelect()">Выбрать тип топлива</button>
     </div>
     <div id="showHide" class="showHide">
         <h3>Выберите тип топлива</h3>
@@ -60,6 +61,9 @@
             <label><input type="radio" name="fuel" style="width:120px; height:40px;" value="benz"></label> Бензин
             <label><input type="radio" name="fuel" style="width:120px; height:40px;" value="dis"></label> Дизель
         </h2>
+    </div>
+    <div>
+        <output id="selectedFuel" class="localS"></output>
     </div>
     <div id="showHide0" class="showHide">
     <div>
@@ -72,7 +76,7 @@
             <label><input type="text" id="regNumber" class="localSt" autocomplete="on" placeholder="Введите госномер"></label>
         </form>
     </div>
-    <div id="showHide2" class="showHide">
+    <div>
         <h3>Работа автономного отопителя</h3>
         <h2 id="blink2">Норма расхода топлива<br>(л./ч.):</h2>
         <label><input type="number" id="f3.1" class="localSt" placeholder="Введите норму" onblur="sum()"></label>
@@ -94,9 +98,18 @@
         <h2>Показания одометра при выезде<br>(км.):</h2>
         <label><input type="number" id="f7" class="localSt" placeholder="Введите пробег" min="0" onblur="sum()"></label>
         <div id="f8"></div>
+        <div>
+            <h2>Хрономераж вызова:</h2>
+            <div><output id="getTime" class="localS"></output></div>
+            <div><output id="getTime2" class="localS"></output></div>
+        </div>
     </div>
     <div>
         <button onclick="add()">Добавить/Удалить поле</button>
+    </div>
+    <div>
+        <button onclick="getTime()">Выезд</button>
+        <button onclick="getTime2()">Прибытие</button>
     </div>
     <div><h2>Остаток топлива<br>(возвращение в гараж):</h2>
         <output class="localS" id="f9"></output>

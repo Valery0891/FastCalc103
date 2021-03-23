@@ -70,7 +70,7 @@ document.querySelector('#f32').addEventListener('input', function() {
     }
 });
 
-function choiceFuel() {
+function fuelSelect() {
     document.getElementById('choiceFuel').style.display = 'none';
     document.getElementById('showHide').style.display = 'block';
 }
@@ -118,30 +118,44 @@ function benzDisMonth() {
 let radio = document.getElementsByName('fuel');
 radio[0].onclick = function() {
     localStorage.setItem('idRadio', this.value);
-    document.getElementById('showHide2').style.display = 'none';
-    if(document.getElementById('f32').value) {
-        localStorage.removeItem('f32');
-        document.getElementById('f32').value = ''
-        localStorage.removeItem('f3.3');
-        document.getElementById('f3.3').value = ''
-    }
+    document.getElementById('selectedFuel').innerHTML = 'Выбран бензин';
+    localStorage.setItem('selectedFuel', 'Выбран бензин');
     benzDisMonth();
 };
 radio[1].onclick = function() {
     localStorage.setItem('idRadio', this.value);
-    document.getElementById('showHide2').style.display = 'block';
+    document.getElementById('selectedFuel').innerHTML = 'Выбран дизель';
+    localStorage.setItem('selectedFuel', 'Выбран дизель');
     benzDisMonth()
 };
 
 if (localStorage.getItem('idRadio') === 'benz') {
     radio[0].checked = true;
-    document.getElementById('showHide2').style.display = 'none';
     document.getElementById('showHide0').style.display = 'block';
+    document.getElementById('showHide').style.display = 'none';
 }
 else if (localStorage.getItem('idRadio') === 'dis') {
     radio[1].checked = true;
-    document.getElementById('showHide2').style.display = 'block';
     document.getElementById('showHide0').style.display = 'block';
+    document.getElementById('showHide').style.display = 'none';
+}
+
+function getTime() {
+    let D = new Date();
+    document.getElementById('getTime').innerHTML = 'Выезд: ' + D.toLocaleString("ru", {
+        hour: 'numeric',
+        minute: 'numeric'
+    });
+    localStorage.setItem('getTime',document.getElementById('getTime').innerHTML)
+}
+
+function getTime2() {
+    let D = new Date();
+    document.getElementById('getTime2').innerHTML = 'Прибытие: ' + D.toLocaleString("ru", {
+        hour: 'numeric',
+        minute: 'numeric'
+    });
+    localStorage.setItem('getTime2',document.getElementById('getTime2').innerHTML)
 }
 
 function add() {
@@ -154,6 +168,10 @@ function add() {
         return km >= 1
     }
     if (arr.every(isPositive) === true && i <= 25) {
+        document.getElementById('getTime').innerHTML = '';
+        localStorage.removeItem('getTime');
+        document.getElementById('getTime2').innerHTML = '';
+        localStorage.removeItem('getTime2');
         let input = '<div id="ff' + i + '">' +
                     '<span>' + [i+1] + '.&nbsp&nbsp</span>' +
                     '<input type="number" id="fff' + i + '" class="localSt" name="n2" min="1" placeholder="Введите расстояние (км.)" onblur="sum()">' +
